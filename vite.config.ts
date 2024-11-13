@@ -6,6 +6,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0', // Bind to all network interfaces
     port: 3000,      // You can change this if needed
+    https: false,
     strictPort: true,
     cors: true,      // Enable CORS (optional, but can help with browser issues)
   },
