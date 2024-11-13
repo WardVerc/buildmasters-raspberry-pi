@@ -5,7 +5,8 @@ function App() {
   return (
     <>
       <div>
-        <h1>Buildmasters Raspberry Pi</h1>
+        <h2>Buildmasters Raspberry Pi</h2>
+        <p>Raspberry stats:</p>
       </div>
     </>
   )
