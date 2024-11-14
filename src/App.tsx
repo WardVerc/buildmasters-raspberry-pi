@@ -7,7 +7,6 @@ function App() {
       <div>
         <h2>Buildmasters Raspberry Pi</h2>
         <p>Raspberry stats:</p>
-        <p>This is a test</p>
       </div>
     </>
   )
