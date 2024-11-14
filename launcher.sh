@@ -1,11 +1,18 @@
 #!/bin/sh
 # launcher.sh
-# navigate to home directory, then to this directory, then execute python script, then back home
-echo cding now
-cd /home/pi/buildmasters-raspberry-pi
-echo pulling from github now
+
+# Source NVM to load the Node.js environment
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+echo "Changing directory"
+cd /home/pi/buildmasters-raspberry-pi || exit 1
+
+echo "Pulling from GitHub"
 git pull
-echo npm installing now
+
+echo "Installing npm dependencies"
 npm install
-echo npm run dev now
+
+echo "Starting project with npm"
 npm run dev
