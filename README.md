@@ -1,33 +1,38 @@
-Install the Raspberry Pi OS lite on a SD card with the following settings:
-Set a hostname
-Configure wireless LAN and enter your wifi details
-Under services enable SSH (see remote access documentation on the raspberry pi official website)
+# Buildmasters Raspberry Pi Camera!
+Hello, I got the idea to make a camera project with my raspberry pi, so here it is!  
+  
+Here are some notes:
 
-Plug in your Raspberry and 
-`sudo apt update`
+## Install the Raspberry Pi OS lite on a SD card with the following settings:  
+- Set a hostname  
+- Configure wireless LAN and enter your wifi details  
+- Under services enable SSH (see remote access documentation on the raspberry pi official website)
+
+## Plug in your Raspberry and  
+`sudo apt update`  
 `sudo apt full-upgrade -y`
 
-And install node.js for linux
+And install node.js for linux  
 https://nodejs.org/en/download/package-manager
 
-Reboot
+### Reboot  
 `sudo reboot`
 
-Check if and where node and npm are installed (should be under a .nvm directory which where we are pointing to in the launcher.sh file)
-`which node`
+Check if and where node and npm are installed (should be under a .nvm directory which where we are pointing to in the launcher.sh file)  
+`which node`  
 `which npm`
 
-Make sure the launcher.sh file can be edited
-`sudo chown pi:pi /home/pi/buildmasters-raspberry-pi/launcher.sh`
-`sudo chmod +w /home/pi/buildmasters-raspberry-pi/launcher.sh`
+Make sure the launcher.sh file can be edited  
+`sudo chown pi:pi /home/pi/buildmasters-raspberry-pi/launcher.sh`  
+`sudo chmod +w /home/pi/buildmasters-raspberry-pi/launcher.sh`  
 `sudo chmod +x /home/pi/buildmasters-raspberry-pi/launcher.sh`
 
-Also create a log file and give it the correct rights:
-`sudo touch /home/pi/logs.log`
-`sudo chown pi:pi /home/pi/logs.log`
+Also create a log file and give it the correct rights:  
+`sudo touch /home/pi/logs.log`  
+`sudo chown pi:pi /home/pi/logs.log`  
 `sudo chmod 644 /home/pi/logs.log`
 
-To run a script on boot, do the following:
+## To run a script on boot, do the following:  
 `sudo nano /etc/rc.local`
 
 and edit it to this:
