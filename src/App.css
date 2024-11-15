@@ -24,11 +24,14 @@
 }
 
 .groep-container {
-  background-image: url("pictures/groep.jpg");
-  background-position: center;
+  /* background-image: url("pictures/groep.jpg"); */
+  /* background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
-  height: 30vh;
+  background-size: cover; */
+  object-fit: cover;
+  height: 40vh;
+  width: 50vw;
+  margin: auto;
 }
 
 @keyframes logo-spin {
