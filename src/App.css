@@ -18,6 +18,19 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+.app-container {
+  /* border: 1px solid red;  */
+  width: 50vw;
+}
+
+.groep-container {
+  background-image: url("pictures/groep.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 30vh;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
