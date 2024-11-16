@@ -64,3 +64,21 @@ exit 0
 ```
 
 This script will wait a bit so the wifi connection is established, execute our launcher script as the pi user, and log some messages to the log file.
+
+## Running a Python script in a React project
+- You need a server.py, run a python backend (ex. Flask) on it  
+  - To install Flask on your Raspberry Pi,  
+  `python3 -m venv .venv` create a python environment  
+  `. .venv/bin/activate` activate the environment  
+  `pip3 install flask` install Flask  
+  `pip3 install flask-cors` to resolve the CORS error  
+- Run the backend simultaneously with the frontend  
+  - `npm install concurrently --save-dev`  
+  - Update the package.json with:  
+  ```
+  "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+  "dev:frontend": "vite",
+  "dev:backend": "python3 server.py",
+  ```  
+- Create an endpoint in your backend which will execute your python script
+- Call your endpoint from the frontend
