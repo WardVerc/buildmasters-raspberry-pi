@@ -9,6 +9,8 @@ interface Stats {
   temp: string;
 }
 
+const backendURL = "http://192.168.0.241";
+
 function App() {
   const [pictureNames, setPictureNames] = useState<Record<string, string[]>>({});
   const [stats, setStats] = useState<Stats>({
@@ -21,7 +23,7 @@ function App() {
 
   const handleButtonClick = async () => {
     try {
-      const response = await fetch('http://localhost:4000/take-picture');
+      const response = await fetch(`${backendURL}/take-picture`);
       const data = await response.json();
       console.log(data.message);
       getPictures();
@@ -55,7 +57,7 @@ function App() {
 
   const getPictures = async () => {
     try {
-      const response = await fetch('http://localhost:4000/pictures');
+      const response = await fetch(`${backendURL}/pictures`);
       const data = await response.json();
       if (data.results.length > 0) {
         console.log(data.results);
@@ -68,7 +70,7 @@ function App() {
 
   const getStats = async () => {
     try {
-      const response = await fetch('http://localhost:4000/stats');
+      const response = await fetch(`${backendURL}/stats`);
       const data = await response.json();
       if (data.results) {
         console.log(data.results);
