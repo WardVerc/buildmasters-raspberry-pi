@@ -9,7 +9,7 @@ echo "Changing directory"
 cd /home/pi/buildmasters-raspberry-pi || exit 1
 
 echo "Activating environment"
-source .venv/bin/activate
+. .venv/bin/activate
 
 echo "Pulling from GitHub"
 git pull
