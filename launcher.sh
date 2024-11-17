@@ -14,5 +14,8 @@ git pull
 echo "Installing npm dependencies"
 npm install
 
+echo "Activating environment"
+. .venv/bin/activate
+
 echo "Starting project with npm"
 npm run dev
