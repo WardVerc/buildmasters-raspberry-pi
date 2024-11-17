@@ -8,14 +8,14 @@ export NVM_DIR="$HOME/.nvm"
 echo "Changing directory"
 cd /home/pi/buildmasters-raspberry-pi || exit 1
 
+echo "Activating environment"
+. .venv/bin/activate
+
 echo "Pulling from GitHub"
 git pull
 
 echo "Installing npm dependencies"
 npm install
-
-echo "Activating environment"
-. .venv/bin/activate
 
 echo "Starting project with npm"
 npm run dev
