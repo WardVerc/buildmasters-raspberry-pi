@@ -17,5 +17,5 @@ git pull
 echo "Installing npm dependencies"
 npm install
 
-# echo "Starting project with npm"
-# npm run dev
+echo "Starting project with npm"
+npm run dev
