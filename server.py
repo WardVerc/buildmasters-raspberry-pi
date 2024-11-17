@@ -5,7 +5,9 @@ from os import listdir
 import platform
 
 app = Flask(__name__)
-CORS(app)
+
+# Fix CORS error, only allow requests from the raspberry
+CORS(app, resources={r"/*": {"origins": ["http://192.168.0.241:3000"]}})
 
 @app.route('/take-picture', methods=['GET'])
 def take_picture():
