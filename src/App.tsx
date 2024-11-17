@@ -23,7 +23,13 @@ function App() {
 
   const handleButtonClick = async () => {
     try {
-      const response = await fetch(`${backendURL}/take-picture`);
+      const response = await fetch(`${backendURL}/take-picture`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
       const data = await response.json();
       console.log(data.message);
       getPictures();
@@ -57,7 +63,13 @@ function App() {
 
   const getPictures = async () => {
     try {
-      const response = await fetch(`${backendURL}/pictures`);
+      const response = await fetch(`${backendURL}/pictures`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
       const data = await response.json();
       if (data.results.length > 0) {
         console.log(data.results);
@@ -70,7 +82,13 @@ function App() {
 
   const getStats = async () => {
     try {
-      const response = await fetch(`${backendURL}/stats`);
+      const response = await fetch(`${backendURL}/stats`, {
+        method: "GET",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
       const data = await response.json();
       if (data.results) {
         console.log(data.results);
