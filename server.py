@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import subprocess
 from flask_cors import CORS
 from os import listdir
@@ -7,7 +7,26 @@ import platform
 app = Flask(__name__)
 
 # Fix CORS error, only allow requests from the raspberry
-CORS(app, resources={r"/*": {"origins": ["http://192.168.0.241:3000"]}})
+CORS(app, resources={r"/*": {
+    "origins": ["http://192.168.0.241:3000"],
+    "methods": ["GET", "POST", "OPTIONS"],
+    "allow_headers": ["Content-Type", "Authorization"],
+    "supports_credentials": True
+}})
+
+# Also CORS error fix
+@app.before_request
+def handle_options():
+    if request.method == "OPTIONS":
+        response = app.make_default_options_response()
+        headers = response.headers
+
+        # Set CORS headers for preflight requests
+        headers["Access-Control-Allow-Origin"] = request.headers.get("Origin")
+        headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        headers["Access-Control-Allow-Credentials"] = "true"
+        return response, 204
 
 @app.route('/take-picture', methods=['GET'])
 def take_picture():

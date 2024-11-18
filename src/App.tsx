@@ -28,7 +28,8 @@ function App() {
         mode: "cors",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
+        credentials: "include"
       });
       const data = await response.json();
       console.log(data.message);
@@ -68,7 +69,8 @@ function App() {
         mode: "cors",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
+        credentials: "include"
       });
       const data = await response.json();
       if (data.results.length > 0) {
@@ -87,7 +89,8 @@ function App() {
         mode: "cors",
         headers: {
           "Content-Type": "application/json",
-        }
+        },
+        credentials: "include"
       });
       const data = await response.json();
       if (data.results) {
