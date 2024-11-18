@@ -23,3 +23,4 @@ def take_picture_now():
     picam2.start_and_capture_file(filename)
     print(f"Image saved as: {filename}")
     picam2.stop()
+    picam2.close()
