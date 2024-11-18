@@ -6,13 +6,8 @@ import platform
 
 app = Flask(__name__)
 
-# Fix CORS error, only allow requests from the raspberry
-CORS(app, resources={r"/*": {
-    "origins": ["http://192.168.0.241:3000"],
-    "methods": ["GET", "POST", "OPTIONS"],
-    "allow_headers": ["Content-Type", "Authorization"],
-    "supports_credentials": True
-}})
+# Fix CORS error, allow all requests
+CORS(app, supports_credentials=True)
 
 # Also CORS error fix
 @app.before_request
@@ -36,12 +31,34 @@ def take_picture():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
     
-@app.route('/pictures', methods=['GET'])
+@app.route('/pictures', methods=['GET', 'OPTIONS'])
 def get_pictures():
-    return jsonify({'status': 'success', 'message': 'Got pictures successfully', 'results': listdir('pictures')}), 200
+    if request.method == "OPTIONS":
+        response = jsonify({"status": "success"})
+        response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin")
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        return response, 204
+    
+    response = jsonify({
+        'status': 'success',
+        'message': 'Got pictures successfully',
+        'results': listdir('pictures')
+    })
+    response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin")
+    response.headers["Access-Control-Allow-Credentials"] = "true"
+    return response, 200
 
-@app.route('/stats', methods=['GET'])
+@app.route('/stats', methods=['GET', 'OPTIONS'])
 def get_stats():
+    if request.method == "OPTIONS":
+        response = jsonify({"status": "success"})
+        response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin")
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        return response, 204
     try:
         system = platform.system()
 
@@ -81,13 +98,17 @@ def get_stats():
             Temp = "N/A"
 
 
-        return jsonify({'status': 'success', 'message': 'Got stats successfully', 'results': {
+        response = jsonify({'status': 'success', 'message': 'Got stats successfully', 'results': {
             "ip": IP,
             "cpu": CPU,
             "memUsage": MemUsage,
             "diskSpace": Disk,
             "temp": Temp
         }}), 200
+
+        response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin")
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        return response, 200
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
