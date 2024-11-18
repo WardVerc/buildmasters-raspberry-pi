@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 import subprocess
 from flask_cors import CORS
 from os import listdir
@@ -6,22 +6,7 @@ import platform
 
 app = Flask(__name__)
 
-# Fix CORS error, allow all requests
-CORS(app, supports_credentials=True)
-
-# Also CORS error fix
-@app.before_request
-def handle_options():
-    if request.method == "OPTIONS":
-        response = app.make_default_options_response()
-        headers = response.headers
-
-        # Set CORS headers for preflight requests
-        headers["Access-Control-Allow-Origin"] = request.headers.get("Origin")
-        headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-        headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        headers["Access-Control-Allow-Credentials"] = "true"
-        return response, 204
+CORS(app)
 
 @app.route('/take-picture', methods=['GET'])
 def take_picture():
@@ -31,34 +16,17 @@ def take_picture():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
     
-@app.route('/pictures', methods=['GET', 'OPTIONS'])
-def get_pictures():
-    if request.method == "OPTIONS":
-        response = jsonify({"status": "success"})
-        response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin")
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        response.headers["Access-Control-Allow-Credentials"] = "true"
-        return response, 204
-    
+@app.route('/pictures', methods=['GET'])
+def get_pictures():    
     response = jsonify({
         'status': 'success',
         'message': 'Got pictures successfully',
         'results': listdir('pictures')
     })
-    response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin")
-    response.headers["Access-Control-Allow-Credentials"] = "true"
     return response, 200
 
-@app.route('/stats', methods=['GET', 'OPTIONS'])
+@app.route('/stats', methods=['GET'])
 def get_stats():
-    if request.method == "OPTIONS":
-        response = jsonify({"status": "success"})
-        response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin")
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        response.headers["Access-Control-Allow-Credentials"] = "true"
-        return response, 204
     try:
         system = platform.system()
 
@@ -104,10 +72,8 @@ def get_stats():
             "memUsage": MemUsage,
             "diskSpace": Disk,
             "temp": Temp
-        }}), 200
+        }})
 
-        response.headers["Access-Control-Allow-Origin"] = request.headers.get("Origin")
-        response.headers["Access-Control-Allow-Credentials"] = "true"
         return response, 200
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
