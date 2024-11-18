@@ -17,12 +17,15 @@ def get_next_filename():
 def take_picture_now():
     # Picamera setup
     picam2 = Picamera2()
+
     camera_config = picam2.create_preview_configuration()
     picam2.configure(camera_config)
-    picam2.start_preview(Preview.NULL)
+    picam2.start_preview(Preview.NULL) # do we need the above three lines?
+    
     picam2.start()
 
     # Take picture with Picamera
     filename = get_next_filename()
     picam2.capture_file(filename)
     print(f"Image saved as: {filename}")
+    picam2.stop()
