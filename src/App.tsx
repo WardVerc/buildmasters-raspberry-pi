@@ -9,8 +9,7 @@ interface Stats {
   temp: string;
 }
 
-//const backendURL = "http://192.168.0.241:4000";
-const backendURL = "http://localhost:4000";
+const backendURL = "http://192.168.0.241:4000";
 
 function App() {
   const [pictureNames, setPictureNames] = useState<Record<string, string[]>>({});
