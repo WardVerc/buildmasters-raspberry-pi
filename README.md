@@ -69,6 +69,7 @@ This script will wait a bit so the wifi connection is established, execute our l
 - You need a server.py, run a python backend (ex. Flask) on it  
   - To install Flask on your Raspberry Pi,  
   `python3 -m venv .venv` create a python environment  
+  `python3 -m venv --system-site-packages .venv` to add all global packages aswell  
   `. .venv/bin/activate` activate the environment  
   `pip3 install flask` install Flask  
   `pip3 install flask-cors` to resolve the CORS error  

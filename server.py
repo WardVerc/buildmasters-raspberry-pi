@@ -3,7 +3,7 @@ import subprocess
 from flask_cors import CORS
 from os import listdir
 import platform
-import take_picture
+from take_picture import take_picture_now
 
 app = Flask(__name__)
 
@@ -12,7 +12,7 @@ CORS(app)
 @app.route('/take-picture', methods=['GET'])
 def take_picture():
     try:
-        take_picture.take_picture_now()
+        take_picture_now()
         return jsonify({'status': 'success', 'message': 'Took picture successfully'}), 200
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
