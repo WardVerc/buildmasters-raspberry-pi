@@ -1,6 +1,7 @@
 from picamera2 import Picamera2, Preview
 import os
 from datetime import datetime
+import time
 
 def get_next_filename():
     # Get today's date in "YYYY-MM-DD" format
@@ -17,10 +18,11 @@ def get_next_filename():
 def take_picture_now():
     # Picamera setup
     picam2 = Picamera2()
+    time.sleep(1)
 
     # Take picture with Picamera
     filename = get_next_filename()
     picam2.start_and_capture_file(filename)
     print(f"Image saved as: {filename}")
-    picam2.stop()
+    time.sleep(1)
     picam2.close()
