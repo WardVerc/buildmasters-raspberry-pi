@@ -13,6 +13,9 @@ const backendURL = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
   const [pictureNames, setPictureNames] = useState<Record<string, string[]>>({});
+  const [isFullScreen, setIsFullScreen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
+  const [pictureOfTheDay, setPictureOfTheDay] = useState('');
   const [stats, setStats] = useState<Stats>({
     ip: "N/A",
     cpu: "N/A",
@@ -55,12 +58,41 @@ function App() {
     }
   };
 
+  const handleImageClick = (pictureName: string) => {
+    setSelectedImage(pictureName);
+    setIsFullScreen(true);
+  }
+
+  const closeFullScreen = () => {
+    setIsFullScreen(false);
+    setSelectedImage('');
+  };
+
+  const checkIfToday = (dateString: string) => {
+    // Get today's date in the format YYYY-MM-DD
+    const today = new Date();
+    const todayString = today.toISOString().split('T')[0];
+
+    // Compare the provided date string with today's date
+    return dateString === todayString;
+  };
+
+  const checkPictureOfTheDay = (sortedPictures: Record<string, string[]>) => {
+    Object.entries(sortedPictures).some(([key, value]) => {
+      if (checkIfToday(key)) {
+        setPictureOfTheDay(value[0]);
+        return true;
+      }
+      return false;
+    });
+  }
+
   const getPictures = async () => {
     try {
       const response = await fetch(`${backendURL}/pictures`);
       const data = await response.json();
       if (data.results.length > 0) {
-        console.log(data.results);
+        checkPictureOfTheDay(sortPictures(data.results));
         setPictureNames(sortPictures(data.results));
       }
     } catch (error) {
@@ -73,7 +105,6 @@ function App() {
       const response = await fetch(`${backendURL}/stats`);
       const data = await response.json();
       if (data.results) {
-        console.log(data.results);
         setStats(data.results);
       }
     } catch (error) {
@@ -86,14 +117,20 @@ function App() {
     getStats();
   }, [])
 
-
   return (
     <div className='app-container'>
       <h2>Buildmasters Raspberry Pi</h2>
       <button onClick={handleButtonClick}>Take picture</button>
-      <h4>Picture of the day:</h4>
-      <img src="pictures/groep.jpg" className='image-cover' />
-      <h4>Other pictures</h4>
+      {pictureOfTheDay ? (
+        <>
+          <h4>First picture of the day:</h4>
+          <img src={`pictures/${pictureOfTheDay}`} className='image-cover' onClick={() => handleImageClick(pictureOfTheDay)} />
+        </>
+      ) : (
+        <>
+          <h4>No picture of today yet! 😭</h4>
+        </>
+      )}
       <div>
         {Object.keys(pictureNames).sort().reverse().map((date) => (
           <div key={date}>
@@ -105,6 +142,7 @@ function App() {
                   src={`pictures/${picture}`}
                   alt={picture}
                   className='image-cover'
+                  onClick={() => handleImageClick(picture)}
                 />
               ))}
             </div>
@@ -113,8 +151,13 @@ function App() {
       </div>
       <h3>Raspberry stats:</h3>
       {Object.entries(stats).map(([key, value]) => (
-        <p>{key}: {value}</p>
+        <p key={key}>{key}: {value}</p>
       ))}
+      {isFullScreen && selectedImage && (
+        <div className="full-screen-overlay" onClick={closeFullScreen}>
+          <img src={`pictures/${selectedImage}`} alt="Full Screen" className="full-screen-image" />
+        </div>
+      )}
     </div>
   )
 }

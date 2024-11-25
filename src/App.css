@@ -1,58 +1,39 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-.app-container {
-  /* border: 1px solid red;  */
-  width: 50vw;
-}
-
 .image-cover {
-  /* background-image: url("pictures/groep.jpg"); */
-  /* background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover; */
-  object-fit: cover;
-  height: 40vh;
-  width: 50vw;
-  margin: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  border: 2px solid #ddd;
+
+  -webkit-box-shadow: -11px 10px 10px -3px rgba(0,0,0,0.66);
+  -moz-box-shadow: -11px 10px 10px -3px rgba(0,0,0,0.66);
+  box-shadow: -11px 10px 10px -3px rgba(0,0,0,0.66);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.full-screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  border-radius: 0.5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.full-screen-image {
+  margin: 5rem;
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
 }
