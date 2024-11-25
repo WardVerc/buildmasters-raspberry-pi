@@ -9,7 +9,7 @@ interface Stats {
   temp: string;
 }
 
-const backendURL = "http://192.168.0.241:4000";
+const backendURL = import.meta.env.VITE_BACKEND_URL;
 
 function App() {
   const [pictureNames, setPictureNames] = useState<Record<string, string[]>>({});
