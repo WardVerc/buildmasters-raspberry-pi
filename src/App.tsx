@@ -14,6 +14,8 @@ const backendURL = import.meta.env.VITE_BACKEND_URL;
 function App() {
   const [pictureNames, setPictureNames] = useState<Record<string, string[]>>({});
   const [isFullScreen, setIsFullScreen] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [takePictureButtonText, setTakePictureButtonText] = useState('Take picture 📸');
   const [selectedImage, setSelectedImage] = useState('');
   const [pictureOfTheDay, setPictureOfTheDay] = useState('');
   const [stats, setStats] = useState<Stats>({
@@ -43,10 +45,21 @@ function App() {
         sortedPictures[date].push(pictureName);
       }
     })
+
+    // Sort each picture by their counter, counting down from the highest counter
+    for (const date in sortedPictures) {
+      sortedPictures[date] = sortedPictures[date].sort((a, b) => {
+        const counterA = Number(a.split('-').pop()?.replace('.jpg', ''));
+        const counterB = Number(b.split('-').pop()?.replace('.jpg', ''));
+        return counterB - counterA;
+      });
+    }
     return sortedPictures;
   }
 
   const handleButtonClick = async () => {
+    setIsButtonDisabled(true);
+    setTakePictureButtonText('Taking picture ... ⏳')
     try {
       const response = await fetch(`${backendURL}/take-picture`);
       const data = await response.json();
@@ -56,6 +69,10 @@ function App() {
     } catch (error) {
       console.log(`Error take picture: ${error}`);
     }
+    setTimeout(() => {
+      setTakePictureButtonText('Take picture 📸')
+      setIsButtonDisabled(false);
+    }, 5000)
   };
 
   const handleImageClick = (pictureName: string) => {
@@ -80,7 +97,9 @@ function App() {
   const checkPictureOfTheDay = (sortedPictures: Record<string, string[]>) => {
     Object.entries(sortedPictures).some(([key, value]) => {
       if (checkIfToday(key)) {
-        setPictureOfTheDay(value[0]);
+        // The array is sorted with the most recent one first, we need the first one of the day, 
+        // so we need the last element in the array
+        setPictureOfTheDay(value[value.length - 1]);
         return true;
       }
       return false;
@@ -120,7 +139,7 @@ function App() {
   return (
     <div className='app-container'>
       <h2>Buildmasters Raspberry Pi</h2>
-      <button onClick={handleButtonClick}>Take picture</button>
+      <button onClick={handleButtonClick} disabled={isButtonDisabled}>{takePictureButtonText}</button>
       {pictureOfTheDay ? (
         <>
           <h4>First picture of the day:</h4>
