@@ -18,6 +18,8 @@ function App() {
   const [takePictureButtonText, setTakePictureButtonText] = useState('Take picture 📸');
   const [selectedImage, setSelectedImage] = useState('');
   const [pictureOfTheDay, setPictureOfTheDay] = useState('');
+  const [logs, setLogs] = useState('');
+  const [cameraLogs, setCameraLogs] = useState('');
   const [stats, setStats] = useState<Stats>({
     ip: "N/A",
     cpu: "N/A",
@@ -64,8 +66,9 @@ function App() {
       const response = await fetch(`${backendURL}/take-picture`);
       const data = await response.json();
       console.log(data.message);
-      getPictures();
-      getStats();
+      await getPictures();
+      await getStats();
+      await getLatestLogs();
     } catch (error) {
       console.log(`Error take picture: ${error}`);
     }
@@ -74,6 +77,25 @@ function App() {
       setIsButtonDisabled(false);
     }, 5000)
   };
+
+  const handleReboot = async () => {
+    await fetch(`${backendURL}/reboot`);
+  }
+
+  const getLatestLogs = async () => {
+    try {
+      const response = await fetch(`${backendURL}/logs`);
+      const cameraresponse = await fetch(`${backendURL}/camera-logs`);
+      const data = await response.json();
+      const cameradata = await cameraresponse.json();
+      console.log(data.message);
+      console.log(cameradata.message);
+      setLogs(data.results);
+      setCameraLogs(cameradata.results);
+    } catch (error) {
+      console.log(`Error getting logs: ${error}`);
+    }
+  }
 
   const handleImageClick = (pictureName: string) => {
     setSelectedImage(pictureName);
@@ -134,6 +156,7 @@ function App() {
   useEffect(() => {
     getPictures();
     getStats();
+    getLatestLogs();
   }, [])
 
   return (
@@ -177,6 +200,13 @@ function App() {
           <img src={`pictures/${selectedImage}`} alt="Full Screen" className="full-screen-image" />
         </div>
       )}
+      <br />
+      <h3>Latest logs from the Pi:</h3>
+      <p>{logs}</p>
+      <h4>Latest cameralogs:</h4>
+      <p>{cameraLogs}</p>
+      <h1>{"Reboot (be careful!!)"}</h1>
+      <button onClick={handleReboot}>Reboot</button>
     </div>
   )
 }

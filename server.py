@@ -15,6 +15,7 @@ def take_picture():
         take_picture_now()
         return jsonify({'status': 'success', 'message': 'Took picture successfully'}), 200
     except Exception as e:
+        print(str(e))
         return jsonify({'status': 'error', 'message': str(e)}), 500
     
 @app.route('/pictures', methods=['GET'])
@@ -79,6 +80,49 @@ def get_stats():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
+@app.route('/reboot', methods=['GET'])
+def do_reboot():
+    subprocess.run(["/bin/sh", "./shutdown.sh"], check=True)
+
+@app.route('/logs', methods=['GET'])
+def get_logs():
+    try:
+        log_file_path = "/home/pi/logs.log"
+        with open(log_file_path, "r") as log_file:
+            logs = log_file.read()
+            response = jsonify({
+                'status': 'success',
+                'message': 'Got logs successfully',
+                'results': logs
+            })
+        return response, 200
+
+    except FileNotFoundError:
+        return jsonify({'status': 'error', 'message': 'File not found.'}), 404
+    except PermissionError:
+        return jsonify({'status': 'error', 'message': 'Permission denied. Cannot read log file.'}), 403
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
+
+@app.route('/camera-logs', methods=['GET'])
+def get_camera_logs():
+    try:
+        log_file_path = "/home/pi/buildmasters-raspberry-pi/camera_logs.log"
+        with open(log_file_path, "r") as log_file:
+            logs = log_file.read()
+            response = jsonify({
+                'status': 'success',
+                'message': 'Got camera logs successfully',
+                'results': logs
+            })
+        return response, 200
+
+    except FileNotFoundError:
+        return jsonify({'status': 'error', 'message': 'File not found.'}), 404
+    except PermissionError:
+        return jsonify({'status': 'error', 'message': 'Permission denied. Cannot read log file.'}), 403
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=4000)
