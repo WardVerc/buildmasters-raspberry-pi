@@ -72,10 +72,8 @@ function App() {
     } catch (error) {
       console.log(`Error take picture: ${error}`);
     }
-    setTimeout(() => {
-      setTakePictureButtonText('Take picture 📸')
-      setIsButtonDisabled(false);
-    }, 5000)
+    setTakePictureButtonText('Take picture 📸')
+    setIsButtonDisabled(false);
   };
 
   const handleReboot = async () => {
