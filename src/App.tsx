@@ -68,7 +68,6 @@ function App() {
       console.log(data.message);
       await getPictures();
       await getStats();
-      await getLatestLogs();
     } catch (error) {
       console.log(`Error take picture: ${error}`);
     }
@@ -154,7 +153,6 @@ function App() {
   useEffect(() => {
     getPictures();
     getStats();
-    getLatestLogs();
   }, [])
 
   return (
@@ -199,12 +197,18 @@ function App() {
         </div>
       )}
       <br />
-      <h3>Latest logs from the Pi:</h3>
-      <p>{logs}</p>
-      <h4>Latest cameralogs:</h4>
-      <p>{cameraLogs}</p>
+      <button onClick={() => getLatestLogs()}>Get logs</button>
+      {(logs || cameraLogs) && (
+        <>
+          <h3>Latest logs from the Pi:</h3>
+          <p>{logs}</p>
+          <h4>Latest cameralogs:</h4>
+          <p>{cameraLogs}</p>
+        </>
+      )}
       <h1>{"Reboot (be careful!!)"}</h1>
       <button onClick={handleReboot}>Reboot</button>
+
     </div>
   )
 }
