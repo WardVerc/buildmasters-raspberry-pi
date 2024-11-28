@@ -8,7 +8,7 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     filename='camera_logs.log',  # Log file name
-    filemode='a'  # Append mode; use 'w' to overwrite the file each time
+    filemode='w'  # Append mode; use 'w' to overwrite the file each time
 )
 
 # Create a logger
