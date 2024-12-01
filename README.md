@@ -83,3 +83,10 @@ This script will wait a bit so the wifi connection is established, execute our l
   ```  
 - Create an endpoint in your backend which will execute your python script
 - Call your endpoint from the frontend
+
+## Resetting your env variables
+- Set your env variables in your .env file like how you want them to be
+- Check your current set env variables: `printenv`
+- The following command removes your env variables starting with VITE_
+  - `for var in ${(k)parameters}; do [[ $var == VITE_* ]] && unset $var; done`
+- Restart your application
